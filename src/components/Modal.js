@@ -1,6 +1,53 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { actSubmitUser } from "../modules/actions";
 
 class Modal extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      id: "",
+      username: "",
+      name: "",
+      email: "",
+      phoneNumber: "",
+      type: "USER",
+    };
+  }
+
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (nextProps && nextProps.userEdit) {
+      this.setState({
+        id: nextProps.userEdit.id,
+        username: nextProps.userEdit.username,
+        name: nextProps.userEdit.name,
+        email: nextProps.userEdit.email,
+        phoneNumber: nextProps.userEdit.phoneNumber,
+        type: nextProps.userEdit.type,
+      });
+    } else {
+      this.setState({
+        id: "",
+        username: "",
+        name: "",
+        email: "",
+        phoneNumber: "",
+        type: "USER",
+      });
+    }
+  }
+  handleOnChange = (e) => {
+    const { name, value } = e.target;
+    this.setState({
+      [name]: value,
+    });
+  };
+
+  handleOnSubmit = (e) => {
+    e.preventDefault();
+    this.props.handleSubmitUser(this.state);
+  };
+
   render() {
     return (
       <div
@@ -14,7 +61,9 @@ class Modal extends Component {
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title">ADD USER</h5>
+              <h5 className="modal-title">
+                {this.props.userEdit === null ? "ADD USER" : "EDIT USER"}
+              </h5>
               <button
                 type="button"
                 className="close"
@@ -25,26 +74,55 @@ class Modal extends Component {
               </button>
             </div>
             <div className="modal-body">
-              <form>
+              <form onSubmit={this.handleOnSubmit}>
                 <div className="form-group">
                   <label>Username</label>
-                  <input type="text" className="form-control" />
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="username"
+                    onChange={this.handleOnChange}
+                    value={this.state.username}
+                  />
                 </div>
                 <div className="form-group">
                   <label>Name</label>
-                  <input type="text" className="form-control" />
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="name"
+                    onChange={this.handleOnChange}
+                    value={this.state.name}
+                  />
                 </div>
                 <div className="form-group">
                   <label>Email</label>
-                  <input type="text" className="form-control" />
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="email"
+                    onChange={this.handleOnChange}
+                    value={this.state.email}
+                  />
                 </div>
                 <div className="form-group">
                   <label>Phone Number</label>
-                  <input type="text" className="form-control" />
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="phoneNumber"
+                    onChange={this.handleOnChange}
+                    value={this.state.phoneNumber}
+                  />
                 </div>
                 <div className="form-group">
                   <label>Type</label>
-                  <select className="form-control">
+                  <select
+                    className="form-control"
+                    name="type"
+                    onChange={this.handleOnChange}
+                    value={this.state.type}
+                  >
                     <option>USER</option>
                     <option>VIP</option>
                   </select>
@@ -61,4 +139,18 @@ class Modal extends Component {
   }
 }
 
-export default Modal;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    handleSubmitUser: (user) => {
+      dispatch(actSubmitUser(user));
+    },
+  };
+};
+
+const mapStateToProps = (state) => {
+  return {
+    userEdit: state.userReducer.userEdit,
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Modal);

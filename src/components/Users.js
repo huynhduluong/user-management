@@ -1,7 +1,20 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import UserItem from "./UserItem";
 
 class Users extends Component {
+  renderTable = () => {
+    let { keyword, userList } = this.props;
+    if (keyword !== "") {
+      userList = userList.filter((item) => {
+        return item.name.toLowerCase().indexOf(keyword.toLowerCase()) !== -1;
+      });
+    }
+    return userList.map((item) => {
+      return <UserItem key={item.id} user={item} />;
+    });
+  };
+
   render() {
     return (
       <div>
@@ -15,15 +28,18 @@ class Users extends Component {
               <th>Type</th>
             </tr>
           </thead>
-          <tbody>
-            <UserItem />
-            <UserItem />
-            <UserItem />
-          </tbody>
+          <tbody>{this.renderTable()}</tbody>
         </table>
       </div>
     );
   }
 }
 
-export default Users;
+const mapStateToProps = (state) => {
+  return {
+    userList: state.userReducer.userList,
+    keyword: state.userReducer.keyword,
+  };
+};
+
+export default connect(mapStateToProps)(Users);
