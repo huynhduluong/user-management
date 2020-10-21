@@ -1,4 +1,4 @@
-import { DELETE_USER, EDIT_USER, SUBMIT_USER } from "./constant";
+import { DELETE_USER, EDIT_USER, SEARCH_USER, SUBMIT_USER } from "./constant";
 
 const initialState = {
   userList: [
@@ -20,6 +20,7 @@ const initialState = {
     },
   ],
   userEdit: null,
+  keyword: "",
 };
 
 const userReducer = (state = initialState, actions) => {
@@ -52,6 +53,10 @@ const userReducer = (state = initialState, actions) => {
     }
     case EDIT_USER: {
       state.userEdit = actions.payload;
+      return { ...state };
+    }
+    case SEARCH_USER: {
+      state.keyword = actions.payload;
       return { ...state };
     }
     default:

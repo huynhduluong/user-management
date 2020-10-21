@@ -4,7 +4,13 @@ import UserItem from "./UserItem";
 
 class Users extends Component {
   renderTable = () => {
-    return this.props.userList.map((item) => {
+    let { keyword, userList } = this.props;
+    if (keyword !== "") {
+      userList = userList.filter((item) => {
+        return item.name.toLowerCase().indexOf(keyword.toLowerCase()) !== -1;
+      });
+    }
+    return userList.map((item) => {
       return <UserItem key={item.id} user={item} />;
     });
   };
@@ -32,6 +38,7 @@ class Users extends Component {
 const mapStateToProps = (state) => {
   return {
     userList: state.userReducer.userList,
+    keyword: state.userReducer.keyword,
   };
 };
 
