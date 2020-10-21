@@ -1,8 +1,10 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { actDeleteUser } from "../modules/actions";
 
 class UserItem extends Component {
   render() {
-    const { user } = this.props;
+    const { user, handleDelete } = this.props;
     return (
       <tr>
         <td>{user.name}</td>
@@ -18,11 +20,26 @@ class UserItem extends Component {
           >
             Edit
           </button>
-          <button className="btn btn-danger">Delete</button>
+          <button
+            className="btn btn-danger"
+            onClick={() => {
+              handleDelete(user);
+            }}
+          >
+            Delete
+          </button>
         </td>
       </tr>
     );
   }
 }
 
-export default UserItem;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    handleDelete: (user) => {
+      dispatch(actDeleteUser(user));
+    },
+  };
+};
+
+export default connect(null, mapDispatchToProps)(UserItem);
