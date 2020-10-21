@@ -32,9 +32,22 @@ const userReducer = (state = initialState, actions) => {
       return { ...state };
     }
     case SUBMIT_USER: {
-      let newUser = { ...actions.payload, id: Math.random() };
-      let userList = [...state.userList, newUser];
-      state.userList = userList;
+      console.log(actions.payload.id);
+      const index = state.userList.findIndex((item) => {
+        console.log(item.id);
+        return item.id === actions.payload.id;
+      });
+      console.log(index);
+
+      if (index !== -1) {
+        let updateList = [...state.userList];
+        updateList[index] = actions.payload;
+        state.userList = updateList;
+      } else {
+        let newUser = { ...actions.payload, id: Math.random() };
+        let userList = [...state.userList, newUser];
+        state.userList = userList;
+      }
       return { ...state };
     }
     case EDIT_USER: {

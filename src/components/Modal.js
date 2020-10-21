@@ -3,14 +3,39 @@ import { connect } from "react-redux";
 import { actSubmitUser } from "../modules/actions";
 
 class Modal extends Component {
-  state = {
-    username: "",
-    name: "",
-    email: "",
-    phoneNumber: "",
-    type: "USER",
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      id: "",
+      username: "",
+      name: "",
+      email: "",
+      phoneNumber: "",
+      type: "USER",
+    };
+  }
 
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (nextProps && nextProps.userEdit) {
+      this.setState({
+        id: nextProps.userEdit.id,
+        username: nextProps.userEdit.username,
+        name: nextProps.userEdit.name,
+        email: nextProps.userEdit.email,
+        phoneNumber: nextProps.userEdit.phoneNumber,
+        type: nextProps.userEdit.type,
+      });
+    } else {
+      this.setState({
+        id: "",
+        username: "",
+        name: "",
+        email: "",
+        phoneNumber: "",
+        type: "USER",
+      });
+    }
+  }
   handleOnChange = (e) => {
     const { name, value } = e.target;
     this.setState({
@@ -37,7 +62,7 @@ class Modal extends Component {
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title">
-                {this.props.userEdit === null ? "ADD USER": "EDIT USER"}
+                {this.props.userEdit === null ? "ADD USER" : "EDIT USER"}
               </h5>
               <button
                 type="button"
@@ -57,6 +82,7 @@ class Modal extends Component {
                     className="form-control"
                     name="username"
                     onChange={this.handleOnChange}
+                    value={this.state.username}
                   />
                 </div>
                 <div className="form-group">
@@ -66,6 +92,7 @@ class Modal extends Component {
                     className="form-control"
                     name="name"
                     onChange={this.handleOnChange}
+                    value={this.state.name}
                   />
                 </div>
                 <div className="form-group">
@@ -75,6 +102,7 @@ class Modal extends Component {
                     className="form-control"
                     name="email"
                     onChange={this.handleOnChange}
+                    value={this.state.email}
                   />
                 </div>
                 <div className="form-group">
@@ -84,6 +112,7 @@ class Modal extends Component {
                     className="form-control"
                     name="phoneNumber"
                     onChange={this.handleOnChange}
+                    value={this.state.phoneNumber}
                   />
                 </div>
                 <div className="form-group">
@@ -92,6 +121,7 @@ class Modal extends Component {
                     className="form-control"
                     name="type"
                     onChange={this.handleOnChange}
+                    value={this.state.type}
                   >
                     <option>USER</option>
                     <option>VIP</option>
