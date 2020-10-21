@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { actDeleteUser } from "../modules/actions";
+import { actDeleteUser, actEditUser } from "../modules/actions";
 
 class UserItem extends Component {
   render() {
-    const { user, handleDelete } = this.props;
+    const { user, handleDelete, handleEdit } = this.props;
     return (
       <tr>
         <td>{user.name}</td>
@@ -17,6 +17,9 @@ class UserItem extends Component {
             className="btn btn-info mr-2"
             data-toggle="modal"
             data-target="#modelIdUser"
+            onClick={() => {
+              handleEdit(user);
+            }}
           >
             Edit
           </button>
@@ -38,6 +41,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     handleDelete: (user) => {
       dispatch(actDeleteUser(user));
+    },
+    handleEdit: (user) => {
+      dispatch(actEditUser(user));
     },
   };
 };

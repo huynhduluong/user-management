@@ -1,4 +1,4 @@
-import { DELETE_USER, SUBMIT_USER } from "./constant";
+import { DELETE_USER, SUBMIT_USER, EDIT_USER } from "./constant";
 
 export const actDeleteUser = (user) => {
   return {
@@ -9,6 +9,13 @@ export const actDeleteUser = (user) => {
 export const actSubmitUser = (user) => {
   return {
     type: SUBMIT_USER,
+    payload: user,
+  };
+};
+
+export const actEditUser = (user) => {
+  return {
+    type: EDIT_USER,
     payload: user,
   };
 };

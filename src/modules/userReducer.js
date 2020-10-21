@@ -1,4 +1,4 @@
-import { DELETE_USER, SUBMIT_USER } from "./constant";
+import { DELETE_USER, EDIT_USER, SUBMIT_USER } from "./constant";
 
 const initialState = {
   userList: [
@@ -19,6 +19,7 @@ const initialState = {
       type: "VIP",
     },
   ],
+  userEdit: null,
 };
 
 const userReducer = (state = initialState, actions) => {
@@ -34,6 +35,10 @@ const userReducer = (state = initialState, actions) => {
       let newUser = { ...actions.payload, id: Math.random() };
       let userList = [...state.userList, newUser];
       state.userList = userList;
+      return { ...state };
+    }
+    case EDIT_USER: {
+      state.userEdit = actions.payload;
       return { ...state };
     }
     default:

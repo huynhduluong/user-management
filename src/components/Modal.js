@@ -36,7 +36,9 @@ class Modal extends Component {
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title">ADD USER</h5>
+              <h5 className="modal-title">
+                {this.props.userEdit === null ? "ADD USER": "EDIT USER"}
+              </h5>
               <button
                 type="button"
                 className="close"
@@ -115,4 +117,10 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(Modal);
+const mapStateToProps = (state) => {
+  return {
+    userEdit: state.userReducer.userEdit,
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Modal);

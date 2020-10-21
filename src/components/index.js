@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Search from "./Search";
 import Users from "./Users";
 import Modal from "./Modal";
+import { actEditUser } from "../modules/actions";
+import { connect } from "react-redux";
 class Home extends Component {
   render() {
     return (
@@ -13,6 +15,9 @@ class Home extends Component {
             className="btn btn-success"
             data-toggle="modal"
             data-target="#modelIdUser"
+            onClick={() => {
+              this.props.handleAddUser();
+            }}
           >
             Add User
           </button>
@@ -24,4 +29,12 @@ class Home extends Component {
   }
 }
 
-export default Home;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    handleAddUser: () => {
+      dispatch(actEditUser(null));
+    },
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Home);
